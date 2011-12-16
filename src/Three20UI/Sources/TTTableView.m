@@ -253,7 +253,8 @@ static const CGFloat kCancelHighlightThreshold = 4.0f;
 
   // Initialize the shadow layers.
   if (nil == _originShadow) {
-    _originShadow = [self shadowAsInverse:NO];
+    // A fix for this bug: https://github.com/facebook/three20/issues/664
+    _originShadow = [[self shadowAsInverse:NO] retain];
     [self.layer insertSublayer:_originShadow atIndex:0];
 
   } else if (![[self.layer.sublayers objectAtIndex:0] isEqual:_originShadow]) {
