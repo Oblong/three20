@@ -135,8 +135,12 @@ static const NSInteger kLoadMaxRetries = 2;
     [self cancel:request];
   
   NSURLRequest* URLRequest = [_queue createNSURLRequest:request URL:URL];
-
-  _connection = [[NSURLConnection alloc] initWithRequest:URLRequest delegate:self];
+  
+  // Such that images will load while user is scrolling. See:
+  // http://stackoverflow.com/questions/8355662/ttthumbsviewcontroller-display-images-while-scrolling
+  _connection = [[NSURLConnection alloc] initWithRequest:URLRequest delegate:self startImmediately:NO];
+  [_connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+  [_connection start];
 }
 
 
